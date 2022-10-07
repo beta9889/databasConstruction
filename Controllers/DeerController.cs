@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using databasConstruction.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace databasConstruction.Controllers
 {
@@ -6,6 +7,7 @@ namespace databasConstruction.Controllers
     {
         public IActionResult Index()
         {
+            ViewBag.DeerNames = DeerModel.getAllDeer();
             return View();
         }
     }

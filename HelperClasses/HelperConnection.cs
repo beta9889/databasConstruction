@@ -21,7 +21,7 @@ namespace databasConstruction.HelperClasses
         {
             if(connecitonString == null)
             {
-                connecitonString = configuration.GetConnectionString("connectionString");
+                connecitonString = configuration.GetValue<string>("ConnectionStrings");
             }
             return new MySqlConnection(connecitonString);
         }
