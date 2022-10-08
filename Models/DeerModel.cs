@@ -8,7 +8,7 @@ namespace databasConstruction.Models
     public class DeerModel
     {
         
-        public static DataTable? getAllDeer()
+        public static List<string>? getAllDeer()
         {   
             var connection = HelperConnection.getConnection();
             connection.Open();
@@ -17,10 +17,15 @@ namespace databasConstruction.Models
 
             adapter.Fill(dataSet,"names");
             connection.Close();
-            if(dataSet.Tables != null)
+            List<string> list = new();
+
+            foreach(var bla in dataSet.Tables[0].AsEnumerable())
             {
-                return (DataTable) dataSet.Tables["names"];
+                Console.WriteLine(bla["DeerName"].ToString());
+                list.Add((string)bla["DeerName"]);
             }
+
+            return list;
             throw new Exception("waaaahhh");
         }
     }
