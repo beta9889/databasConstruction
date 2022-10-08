@@ -12,11 +12,15 @@ namespace databasConstruction.HelperClasses
         private static string password { get; set; }
         private static string connecitonString { get; set; }
 
-        public static void setHelper(string username, string password, IConfiguration config)
+        public static void setHelper(string username, string password)
         {
             HelperConnection.username = username;
             HelperConnection.password = password;
-            HelperConnection.configuration = config;
+        }
+
+        public static void SetConfiguration(IConfiguration config)
+        {
+            configuration = config;
         }
 
         public static MySqlConnection getConnection()
@@ -24,6 +28,11 @@ namespace databasConstruction.HelperClasses
             if(connecitonString == null)
             {
                 connecitonString = configuration.GetValue<string>("ConnectionStrings");
+                connecitonString = connecitonString + "User ID = " + username + ";";
+                if(password != null)
+                {
+                    connecitonString = connecitonString + "Password=" + password + ";";
+                }
             }
             var connection = new MySqlConnection(connecitonString);
             connection.Open();

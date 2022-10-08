@@ -7,7 +7,7 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-HelperConnection.setHelper("sqllab", "Hare#2022",app.Configuration);
+HelperConnection.SetConfiguration(app.Configuration);
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {

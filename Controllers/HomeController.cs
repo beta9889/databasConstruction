@@ -1,4 +1,5 @@
-﻿using databasConstruction.Models;
+﻿using databasConstruction.HelperClasses;
+using databasConstruction.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -22,6 +23,15 @@ namespace databasConstruction.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult Login(string userName, string password)
+        {
+            HelperConnection.setHelper(userName,password);
+            Console.WriteLine("in login post ");
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
