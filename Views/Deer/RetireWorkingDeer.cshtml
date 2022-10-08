@@ -1,0 +1,20 @@
+﻿@page
+
+<form class="display-4" action="Retire" method="post">
+    <table>
+        <tr>
+            <td>Can number :</td>
+            <td><input type="number" name="canNr"/> </td>
+        </tr>
+        <tr>
+            <td>Factory Name :</td>
+            <td><input type="text" name="factory" /></td>
+        </tr>
+        <tr>
+            <td>Taste :</td>
+            <td><input type="text" name="taste"</td>
+        </tr>
+    </table>
+    <input type="hidden" value="@ViewBag.WorkingDeer.DeerNr" name="id"/>
+    <input type="submit" />
+</form>
