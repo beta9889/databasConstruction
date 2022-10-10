@@ -1,18 +1,24 @@
 ﻿using databasConstruction.HelperClasses;
 using MySql.Data.MySqlClient;
-using MySqlX.XDevAPI.Common;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 
 namespace databasConstruction.Models
 {
     public record DeerModel
     {
+        [Required]
         public short DeerNr { get; set; }
+        [Required]
         public string DeerName { get; set; }
+        [Required]
         public string DeerGroup { get; set; }
+        [Required]
         public string Smell { get; set; }
+        [Required]
         public bool Retired { get; set; }
+        [Required]
+        public bool Shown { get; set; } = false;
 
         public static List<DeerModel> GetAllDeers()
         {
@@ -27,50 +33,13 @@ namespace databasConstruction.Models
 
                 foreach (var bla in dataSet.Tables[0].AsEnumerable())
                 {
-                    var deer = new DeerModel
-                    {
-                        DeerName = (string)bla["DeerName"],
-                        DeerGroup = (string)bla["DeerGroup"],
-                        DeerNr = (short)bla["DeerNr"],
-                        Smell = (string)bla["Smell"]
-                    };
-                    deer.Retired = ((string)bla["retired"] != "Working");
-                    result.Add(deer);
+                    result.Add(DataRowToDeerModel(bla));
                 }
-
                 return result;
             }
         }
 
-        public static DeerModel GetSpecificDeer(short id)
-        {
-            using (var connection = HelperConnection.getConnection())
-            {
-                MySqlDataAdapter adapter = new("select DeerName,DeerGroup,retired,DeerNr,Smell from ViewAllDeer Where DeerNr = @id;", connection);
-                DataSet dataSet = new();
-
-                adapter.Fill(dataSet, "names");
-                connection.Close();
-                List<DeerModel> result = new();
-
-                foreach (var bla in dataSet.Tables[0].AsEnumerable())
-                {
-                    var deer = new DeerModel
-                    {
-                        DeerName = (string)bla["DeerName"],
-                        DeerGroup = (string)bla["DeerGroup"],
-                        DeerNr = (short)bla["DeerNr"],
-                        Smell = (string)bla["Smell"]
-                    };
-                    deer.Retired = ((string)bla["retired"] != "Working");
-                    result.Add(deer);
-                }
-                if (result.Count != 1) throw new Exception();
-                return result[0];
-            }
-        }
-
-        public static DeerModel test(short id)
+        public static DeerModel GetById(short id)
         {
             DataSet table = new();
             using (var conn = HelperConnection.getConnection())
@@ -86,19 +55,25 @@ namespace databasConstruction.Models
                 List<DeerModel> deerModels = new();
                 foreach (var bla in table.Tables[0].AsEnumerable())
                 {
-                    var deer = new DeerModel
-                    {
-                        DeerName = (string)bla["DeerName"],
-                        DeerGroup = (string)bla["DeerGroup"],
-                        DeerNr = (short)bla["DeerNr"],
-                        Smell = (string)bla["Smell"]
-                    };
-                    deer.Retired = ((string)bla["retired"] != "Working");
-                    deerModels.Add(deer);
+
+                    deerModels.Add(DataRowToDeerModel(bla));
                 }
                 if (deerModels.Count != 1) throw new Exception();
                 return deerModels[0];
             }
+        }
+
+        private static DeerModel DataRowToDeerModel(DataRow data)
+        {
+            var deer = new DeerModel
+            {
+                DeerName = (string)data["DeerName"],
+                DeerGroup = (string)data["DeerGroup"],
+                DeerNr = (short)data["DeerNr"],
+                Smell = (string)data["Smell"]
+            };
+            deer.Retired = ((string)data["retired"] != "Working");
+            return deer;
         }
 
         public static void RetireDeerCall(int canNr, string factory, string taste, int id)
@@ -114,9 +89,7 @@ namespace databasConstruction.Models
                 command.CommandType = CommandType.Text;
 
                 command.ExecuteNonQuery();
-
             }
-
         }
     }
 }

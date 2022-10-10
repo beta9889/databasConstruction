@@ -7,34 +7,45 @@ namespace databasConstruction.HelperClasses
 {
     public static class HelperConnection
     {
-        private static IConfiguration configuration { get; set; }
-        private static string username { get; set; }
-        private static string password { get; set; }
-        private static string connecitonString { get; set; }
+        private static IConfiguration _configuration { get; set; }
+        private static string? _username { get; set; }
+        private static string? _password { get; set; }
+        private static string? _connecitonString { get; set; }
 
-        public static void setHelper(string username, string password)
+        public static void setHelper(string username, string? password)
         {
-            HelperConnection.username = username;
-            HelperConnection.password = password;
+            HelperConnection._username = username;
+            HelperConnection._password = password;
+
+            if (_connecitonString != null)
+            {
+                _connecitonString = _configuration.GetValue<string>("ConnectionStrings");
+                _connecitonString = _connecitonString + "User ID = " + _username + ";";
+
+                if (_password != null)
+                {
+                    _connecitonString = _connecitonString + "Password=" + _password + ";";
+                }
+            }
         }
 
         public static void SetConfiguration(IConfiguration config)
         {
-            configuration = config;
+            _configuration = config;
         }
 
         public static MySqlConnection getConnection()
         {
-            if(connecitonString == null)
+            if (_connecitonString == null)
             {
-                connecitonString = configuration.GetValue<string>("ConnectionStrings");
-                connecitonString = connecitonString + "User ID = " + username + ";";
-                if(password != null)
+                _connecitonString = _configuration.GetValue<string>("ConnectionStrings");
+                _connecitonString = _connecitonString + "User ID = " + _username + ";";
+                if (_password != null)
                 {
-                    connecitonString = connecitonString + "Password=" + password + ";";
+                    _connecitonString = _connecitonString + "Password=" + _password + ";";
                 }
             }
-            var connection = new MySqlConnection(connecitonString);
+            var connection = new MySqlConnection(_connecitonString);
             connection.Open();
             return connection;
         }
@@ -46,7 +57,7 @@ namespace databasConstruction.HelperClasses
                 List<T> result = new();
                 foreach (var bla in dataSet.Tables[0].AsEnumerable())
                 {
-                    result.Add( (T) bla[columnName] );
+                    result.Add((T)bla[columnName]);
                 }
                 return result;
             }

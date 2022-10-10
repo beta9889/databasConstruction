@@ -1,6 +1,7 @@
 using databasConstruction.HelperClasses;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddRazorPages();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -22,6 +23,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
