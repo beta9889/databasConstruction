@@ -40,7 +40,6 @@ namespace databasConstruction.Controllers
         {
             if (selectedId != null)
                 DeerToDeerModel.AddConnection(id, (short)selectedId);
-
             try
             {
                 var deerList = DeerModel.GetAllDeers();
