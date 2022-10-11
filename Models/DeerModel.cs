@@ -52,14 +52,30 @@ namespace databasConstruction.Models
                 MySqlDataAdapter adapter = new();
                 adapter.SelectCommand = command;
                 adapter.Fill(table);
+
+
                 List<DeerModel> deerModels = new();
                 foreach (var bla in table.Tables[0].AsEnumerable())
                 {
-
                     deerModels.Add(DataRowToDeerModel(bla));
                 }
                 if (deerModels.Count != 1) throw new Exception();
                 return deerModels[0];
+            }
+        }
+        public static void RetireDeerCall(int canNr, string factory, string taste, int id)
+        {
+            using (var conn = HelperConnection.getConnection())
+            using (var command = conn.CreateCommand())
+            {
+                command.CommandText = "call RetireWorkingDeer(@id,@canNr,@factory,@taste);";
+                command.Parameters.AddWithValue("@id", id);
+                command.Parameters.AddWithValue("@canNr", canNr);
+                command.Parameters.AddWithValue("@factory", factory);
+                command.Parameters.AddWithValue("@taste", taste);
+                command.CommandType = CommandType.Text;
+
+                command.ExecuteNonQuery();
             }
         }
 
@@ -76,20 +92,5 @@ namespace databasConstruction.Models
             return deer;
         }
 
-        public static void RetireDeerCall(int canNr, string factory, string taste, int id)
-        {
-            using (var conn = HelperConnection.getConnection())
-            using (var command = conn.CreateCommand())
-            {
-                command.CommandText = "call RetireWorkingDeer(@id,@canNr,@factory,@taste);";
-                command.Parameters.AddWithValue("@id", id);
-                command.Parameters.AddWithValue("@canNr", canNr);
-                command.Parameters.AddWithValue("@factory", factory);
-                command.Parameters.AddWithValue("@taste", taste);
-                command.CommandType = CommandType.Text;
-
-                command.ExecuteNonQuery();
-            }
-        }
     }
 }

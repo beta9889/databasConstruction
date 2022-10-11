@@ -1,4 +1,9 @@
 ﻿@page
 
 <h1> Login Successfull</h1>
-<a class="text-dark" asp-controller="Deer" asp-action="index">View Deers</a>
+<form action="@Url.Action("Index","Deer")" method="GET">
+
+    <input type="hidden" name="id" value="null"/>
+    <input class="btn" type="submit" value="View All Deers" />
+    @*<a class="text-dark" asp-controller="Deer" asp-action="index">View Deers</a>*@
+</form>

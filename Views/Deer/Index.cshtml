@@ -5,30 +5,24 @@
     {
         return deer.Retired ? "Retired" : "Working";
     }
-
-    public void OnGetChange(int id, List<DeerModel> all)
-    {
-        Console.WriteLine("in selector function");
-        @foreach (var item in all)
-        {
-            if (item.DeerNr == id) item.Shown = true;
-            else item.Shown = false;
-        }
-    }
-
 }
 
-@*<form asp-on-page-handler="Get" method="get">
-    <selector name="id"
-    @foreach (var item in ViewBag.DeerNames)
-    {
-        <option value="@item.DeerNr">
-            @item.DeerName
-        </option>
-    }
-    <input type="hidden" value="ViewBag.DeerNames"/>
+<form action="@Url.Action("Index", "Deer")" method="POST">
+
+    <select name="id">
+
+        @foreach (var item in ViewBag.DeerNames)
+        {
+            <option value="@item.DeerNr">
+                @item.DeerName
+            </option>
+        }
+    </select>
+
+    <input type="hidden" value="@ViewBag.DeerNames" name="list" />
     <input type="submit" value=" Show Deer Info" />
-</form>*@
+</form>
+
 
 <table border="1" cellpadding="2" cellspacing="2">
 
@@ -42,15 +36,15 @@
 
     @foreach (var item in ViewBag.DeerNames)
     {
-        @*@if (item.Shown)
+        @if (item.Shown)
         {
-        *@    <tr border="1" cellpadding="2" cellspacing="2">
+            <tr border="1" cellpadding="2" cellspacing="2">
 
                 <td> @item.DeerNr </td>
                 <td> @item.DeerName </td>
                 <td> @item.DeerGroup </td>
                 <td> @item.Smell</td>
-                <td> @getRetried(item) </td>
+                <td class="btn"> @getRetried(item) </td>
 
                 @if (!item.Retired)
                 {
@@ -61,7 +55,32 @@
                 }
 
             </tr>
-        @*}*@
+        }
     }
-
 </table>
+
+@if (ViewBag.DeerToDeer != null)
+{
+    <table border="1" cellpadding="4" cellspacing="4">
+        <tr> <h4> Deer To Deer Connections</h4></tr>
+        <tr>
+            <th> Deer Name Connected To</th>
+            <th> Deer Id Connected To</th>
+            <th> Deer Status</th>
+        </tr>
+        @foreach (var item in ViewBag.DeerToDeer)
+        {
+            <tr>
+                <td>@item.DeerName</td>
+                <td>@item.DeerNr</td>
+                <td>@item.DeerStatus</td>
+            </tr>
+        }
+    </table>
+    <form action="@Url.Action("Index","Deer")" method="post">
+        <label>Add Connection</label>
+        <input type="number" name="selectedId" />
+        <input type="hidden" value="@ViewBag.Selected.DeerNr" name="id"/>
+        <input type="submit" value="Add connection"/>
+    </form>
+}

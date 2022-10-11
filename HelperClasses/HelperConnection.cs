@@ -57,7 +57,7 @@ namespace databasConstruction.HelperClasses
                 List<T> result = new();
                 foreach (var bla in dataSet.Tables[0].AsEnumerable())
                 {
-                    result.Add((T)bla[columnName]);
+                    result.Add((T) bla[columnName]);
                 }
                 return result;
             }
