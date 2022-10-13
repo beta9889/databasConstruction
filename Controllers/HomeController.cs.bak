@@ -27,6 +27,7 @@ namespace databasConstruction.Controllers
         [HttpPost]
         public IActionResult Login(string userName, string password)
         {
+
             HelperConnection.setHelper(userName,password);
             Console.WriteLine("in login post ");
             return View();

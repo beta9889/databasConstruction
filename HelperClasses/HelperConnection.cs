@@ -1,7 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
-using System.Diagnostics.Contracts;
-using System.Runtime.CompilerServices;
 
 namespace databasConstruction.HelperClasses
 {
@@ -40,6 +38,7 @@ namespace databasConstruction.HelperClasses
             {
                 _connecitonString = _configuration.GetValue<string>("ConnectionStrings");
                 _connecitonString = _connecitonString + "User ID = " + _username + ";";
+             
                 if (_password != null)
                 {
                     _connecitonString = _connecitonString + "Password=" + _password + ";";
@@ -49,7 +48,7 @@ namespace databasConstruction.HelperClasses
             connection.Open();
             return connection;
         }
-
+        
         public static List<T> ConvertSingleColumnList<T>(DataSet dataSet, string columnName)
         {
             if (dataSet.Tables != null)

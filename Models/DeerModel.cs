@@ -27,7 +27,7 @@ namespace databasConstruction.Models
                 var adapter = new MySqlDataAdapter("select DeerName,DeerGroup,retired,DeerNr,Smell from ViewAllDeer", connection);
                 DataSet dataSet = new();
 
-                adapter.Fill(dataSet, "names");
+                adapter.Fill(dataSet);
                 connection.Close();
                 List<DeerModel> result = new();
 
@@ -83,7 +83,7 @@ namespace databasConstruction.Models
         {
             var deer = new DeerModel
             {
-                DeerName = (string)data["DeerName"],
+                DeerName = (string) data["DeerName"],
                 DeerGroup = (string)data["DeerGroup"],
                 DeerNr = (short)data["DeerNr"],
                 Smell = (string)data["Smell"]
