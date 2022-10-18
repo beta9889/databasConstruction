@@ -54,17 +54,15 @@ namespace databasConstruction.Controllers
                     else item.Shown = false;
                 }
                 ViewBag.DeerNames = deerList;
-                var DeerToDeer = DeerToDeerModel.GetConnectionById(id);
-                DeerToDeer.AddRange(DeerToDeerModel.GetConnectionById2(id));
+                var DeerToDeer = DeerToDeerModel.GetAll(id);
                 ViewBag.DeerToDeer = DeerToDeer;
             }
             catch
             {
                 ViewBag.DeerNames = new List<DeerModel>();
                 ViewBag.DeerToDeer = null;
-                return Redirect(Url.Action("Error", "Home"));
+                throw;
             }
-
             return View();
         }
 
