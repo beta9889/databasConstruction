@@ -41,7 +41,7 @@ namespace databasConstruction.Models
 
         public static DeerModel GetById(short id)
         {
-            DataSet table = new();
+            DataSet dataset = new();
             using (var conn = HelperConnection.getConnection())
             using (var command = conn.CreateCommand())
             {
@@ -51,11 +51,11 @@ namespace databasConstruction.Models
 
                 MySqlDataAdapter adapter = new();
                 adapter.SelectCommand = command;
-                adapter.Fill(table);
+                adapter.Fill(dataset);
 
 
                 List<DeerModel> deerModels = new();
-                foreach (var bla in table.Tables[0].AsEnumerable())
+                foreach (var bla in dataset.Tables[0].AsEnumerable())
                 {
                     deerModels.Add(DataRowToDeerModel(bla));
                 }
